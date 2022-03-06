@@ -7,7 +7,7 @@ FSUB_CHANNEL = getenv("FSUB_CHANNEL")
 
 from functools import wraps
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
+from pyrogram.errors import UserNotParticipant
 
 
 CAPTION_BTN = InlineKeyboardMarkup(
@@ -17,7 +17,7 @@ def fsub(func):
     @wraps(func)
     async def sz_message(_, message):
         try:
-            await message._client.get_chat_member(FSUB_CHANNEL, message.from_user.id)
+            await message._client.get_chat_member(int(FSUB_CHANNEL), message.from_user.id)
         except UserNotParticipant:
             return await message.reply_text(
             text="""

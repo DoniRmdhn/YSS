@@ -30,7 +30,7 @@ from Yukki.Utilities.videostream import start_stream_video
 from Yukki.Utilities.youtube import (get_yt_info_id, get_yt_info_query,
                                      get_yt_info_query_slider)
 
-from Yukki.Plugins.custom.func import mplay_stream, vplay_stream
+from Yukki.Plugins.custom.func import mplay_stream, vplay_stream, cplay_stream
 from pyrogram.errors import UserNotParticipant
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from . fsub import fsub
@@ -338,7 +338,7 @@ async def mplayaa(_, message: Message):
         ) = get_yt_info_query(query)
         await mystic.delete()        
         MusicData = f"MusicStream {videoid}|{duration_min}|{message.from_user.id}"
-        return await mplay_stream(message,MusicData)
+        return await cplay_stream(lol,MusicData)
     else:
         if len(message.command) < 2:
             buttons = playlist_markup(
@@ -362,4 +362,4 @@ async def mplayaa(_, message: Message):
         ) = get_yt_info_query(query)
         await mystic.delete()
         MusicData = f"MusicStream {videoid}|{duration_min}|{message.from_user.id}"
-        return await mplay_stream(message,MusicData)
+        return await cplay_stream(lol,MusicData)

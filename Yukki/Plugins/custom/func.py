@@ -378,3 +378,159 @@ async def custom_video_stream(
             0,
         )
         await mystic.delete()
+
+#utto meka mn me test karanwa channel play karanna
+async def cplay_stream(message,MusicData):
+    lel = await app.get_chat(message.chat.id)
+    chat_id = lel.linked_chat.id
+    if chat_id not in db_mem:
+        db_mem[chat_id] = {}
+    callback_data = MusicData.strip()
+    callback_request = callback_data.split(None, 1)[1]
+    chat_title = message.chat.title
+    videoid, duration, user_id = callback_request.split("|")
+    if str(duration) == "None":
+        buttons = livestream_markup("720", videoid, duration, user_id)
+        return await message.reply_text(
+            "**Live Stream Detected**\n\nWant to play live stream? This will stop the current playing musics(if any) and will start streaming live video.",
+            reply_markup=InlineKeyboardMarkup(buttons),
+        )    
+    await message.delete()
+    (
+        title,
+        duration_min,
+        duration_sec,
+        thumbnail,
+        views,
+        channel
+    ) = get_yt_info_id(videoid)
+    if duration_sec > DURATION_LIMIT:
+        return await message.reply_text(
+            f"**Duration Limit Exceeded**\n\n**Allowed Duration: **{DURATION_LIMIT_MIN} minute(s)\n**Received Duration:** {duration_min} minute(s)"
+        )
+    mystic = await message.reply_text(f"Processing:- {title[:20]}")
+    await mystic.edit(
+   f"""
+**Rose music Downloader**
+
+100% •••••••••••••••100%
+
+ᗚ **Title:** `{title[:50]}`
+ᗚ  **duration** :`{duration_min}`
+
+ᗚ @szteambots | @szrosebot    
+                    """)
+    downloaded_file = await loop.run_in_executor(
+        None, download, videoid, mystic, title
+    )
+    raw_path = await convert(downloaded_file)
+    theme = await check_theme(chat_id)
+    chat_title = await specialfont_to_normal(chat_title)
+    thumb = await gen_thumb(
+                        thumbnail, title, message.from_user.id, "NOW PLAYING", views, duration_min, channel
+                    )
+    if chat_id not in db_mem:
+        db_mem[chat_id] = {}
+    await ccustom_start_stream(
+        chat_id,
+        raw_path,
+        videoid,
+        thumb,
+        title,
+        duration_min,
+        duration_sec,
+        mystic,
+    )
+
+async def ccustom_start_stream(
+    chat_id,
+    file,
+    videoid,
+    thumb,
+    title,
+    duration_min,
+    duration_sec,
+    mystic,
+):
+    global get_queue
+    if chat_id not in db_mem:
+        db_mem[chat_id] = {}
+    wtfbro = db_mem[chat_id]
+    wtfbro["live_check"] = False
+    if await is_active_chat(chat_id):
+        position = await Queues.put(chat_id, file=file)
+        _path_ = (
+            (str(file))
+            .replace("_", "", 1)
+            .replace("/", "", 1)
+            .replace(".", "", 1)
+        )
+        buttons = secondary_markup(videoid, message.from_user.id)
+        if file not in db_mem:
+            db_mem[file] = {}
+        cpl = f"cache/{_path_}final.png"
+        shutil.copyfile(thumb, cpl)
+        wtfbro = db_mem[file]
+        wtfbro["title"] = title
+        wtfbro["duration"] = duration_min
+        wtfbro["username"] = message.from_user.mention
+        wtfbro["videoid"] = videoid
+        got_queue = get_queue.get(chat_id)
+        title = title
+        user = message.from_user.first_name
+        duration = duration_min
+        to_append = [title, user, duration]
+        got_queue.append(to_append)
+        final_output = await message.reply_photo(
+            photo=thumb,
+            caption=(
+                f"""
+💡 **Track added to queue**» `{position}`
+🏷 **Name:** [{title[:25]}](https://www.youtube.com/watch?v={videoid}) 
+⏱ **Duration:** `{duration}`
+🎧** Request by:**{user}
+📖 **Info**: [Get Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})"""
+            ),
+            reply_markup=InlineKeyboardMarkup(buttons),
+        )
+        await mystic.delete()        
+        os.remove(thumb)
+        return
+    else:
+        if not await join_stream(chat_id, file):
+            return await mystic.edit("Error Joining Voice Chat.")
+        get_queue[chat_id] = []
+        got_queue = get_queue.get(chat_id)
+        title = title
+        user = message.from_user.first_name
+        duration = duration_min
+        to_append = [title, user, duration]
+        got_queue.append(to_append)
+        await music_on(chat_id)
+        await add_active_chat(chat_id)
+        buttons = primary_markup(
+            videoid, message.from_user.id, duration_min, duration_min
+        )
+        await mystic.delete()
+        cap = f"""
+🏷 **Name:** [{title[:25]}](https://www.youtube.com/watch?v={videoid}) 
+⏱ **Duration:** `{duration}`
+💡 **Status:** `Playing Video`
+🎧** Request by:**{user}
+📖 **Info**: [Get Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})
+"""     
+        final_output = await message.reply_photo(
+            photo=thumb,
+            reply_markup=InlineKeyboardMarkup(buttons),
+            caption=cap,
+        )
+        os.remove(thumb)        
+        await start_timer(
+            videoid,
+            duration_min,
+            duration_sec,
+            final_output,
+            chat_id,
+            message.from_user.id,
+            0,
+        )

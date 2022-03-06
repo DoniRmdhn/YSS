@@ -10,13 +10,21 @@ def others_markup(videoid, user_id):
     db_mem[videoid]["check"] = 1
     buttons = [
         [
-            InlineKeyboardButton(text="▶️", callback_data=f"resumecb"),
-            InlineKeyboardButton(text="⏸️", callback_data=f"pausecb"),
-            InlineKeyboardButton(text="⏭️", callback_data=f"skipcb"),
-            InlineKeyboardButton(text="⏹️", callback_data=f"stopcb"),
+            InlineKeyboardButton(
+                text="📖 Lyrics",
+                callback_data=f"lyrics {videoid}|{user_id}",
+            )
         ],
         [
-                InlineKeyboardButton(text="✚ Your Playlist", callback_data=f'playlist {videoid}|{user_id}'),
+            InlineKeyboardButton(text="▶️ Resume", callback_data=f"resumecb"),
+            InlineKeyboardButton(text="⏸ Pause", callback_data=f"pausecb"),
+        ],
+        [
+            InlineKeyboardButton(text="⏭ Skip", callback_data=f"skipcb"),
+            InlineKeyboardButton(text="⏹ Stop", callback_data=f"stopcb"),
+        ],
+        [
+                InlineKeyboardButton(text="✚ Your Playlist", callback_data=f'your_playlist {videoid}|{user_id}'),
                 InlineKeyboardButton(text="✚ Group Playlist", callback_data=f'group_playlist {videoid}|{user_id}')
         ],
         [

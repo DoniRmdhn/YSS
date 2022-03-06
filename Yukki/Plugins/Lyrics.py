@@ -37,9 +37,8 @@ async def lyricssex(_, CallbackQuery):
     S = y.search_song(t, get_full_info=False)
     if S is None:
         return await CallbackQuery.answer(
-            "Lyrics not found :p", show_alert=True
+            "Lyrics not found", show_alert=True
         )
-    await CallbackQuery.message.delete()
     userid = CallbackQuery.from_user.id
     usr = f"[{CallbackQuery.from_user.first_name}](tg://user?id={userid})"
     xxx = f"""
@@ -60,12 +59,43 @@ async def lyricssex(_, CallbackQuery):
             out_file.write(str(xxx.strip()))
         await CallbackQuery.message.reply_document(
             document=filename,
-            caption=f"**OUTPUT:**\n\n`Lyrics`",
+            caption=f"**{title}**\n\n**Artist:-** {S.artist}\n**Found Lyrics For:-**{S.title}\n**Searched By:-** {usr} \n\n@szteambots",
             quote=False,
         )
         os.remove(filename)
     else:
         await CallbackQuery.message.reply_text(xxx)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @app.on_message(filters.command(["lyrics", f"lyrics@{BOT_USERNAME}"]))
@@ -80,7 +110,7 @@ async def lrsearch(_, message: Message):
     y.verbose = False
     S = y.search_song(query, get_full_info=False)
     if S is None:
-        return await m.edit("Lyrics not found :p")
+        return await m.edit("Lyrics not found ")
     xxx = f"""
 **Lyrics Search Powered By {MUSIC_BOT_NAME}**
 

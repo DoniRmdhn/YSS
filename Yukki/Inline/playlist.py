@@ -78,7 +78,7 @@ def play_genre_playlist(user_id, type, videoid):
         ],
         [
             InlineKeyboardButton(
-                text="❮❮❮ Previous",
+                text="❮❮ Back",
                 callback_data=f"main_playlist {videoid}|{type}|{user_id}",
             ),
             InlineKeyboardButton(text="Close ✖️", callback_data="close"),
@@ -129,7 +129,7 @@ def add_genre_markup(user_id, type, videoid):
         ],
         [
             InlineKeyboardButton(
-                text="❮❮❮ Previous", callback_data=f"goback {videoid}|{user_id}"
+                text="❮❮ back", callback_data=f"goback {videoid}|{user_id}"
             ),
             InlineKeyboardButton(text="Close ✖️", callback_data="close"),
         ],
