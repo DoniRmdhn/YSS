@@ -21,7 +21,7 @@ def fsub(func):
         except UserNotParticipant:
             return await message.reply_text(
             text="""
-**🚫 Access Denied**
+⛔️ **Access Denied**
  You Must Join [My News Channel](https://t.me/szteambots)To Use Me. So, Please Join it & Try Again.
             """,
             reply_markup=CAPTION_BTN,

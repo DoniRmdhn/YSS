@@ -6,7 +6,7 @@ from Yukki.Plugins.Resso import resso_buttons, resso_play
 from Yukki.Plugins.Spotify import spotify_buttons, spotify_play
 import asyncio
 from os import path
-
+from Yukki.Utilities.yt_playlist import play_yt_playlist
 from pyrogram import filters
 from pyrogram.types import (InlineKeyboardMarkup, InputMediaPhoto, Message,
                             Voice)
@@ -38,6 +38,7 @@ from Yukki.Utilities.youtube import (get_yt_info_id, get_yt_info_query,
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from . fsub import fsub
 from pyrogram.errors import UserNotParticipant
+from . Spotify import spotify_play
 
 loop = asyncio.get_event_loop()
 
@@ -135,15 +136,11 @@ async def play(_, message: Message):
         )
     elif url:
         if "spotify.com" in url:
-            return await message.reply_text("Use /spotify for spotify links")
-        
+            return await spotify_play(message) 
         if "resso.com" in url:            
             return await message.reply_text("Use /resso for resso links")
-        if "apple.com" in url:            
-            return await message.reply_text("Use /apple for apple links") 
-        if "SoundCloud.com" in url:            
-            return await message.reply_text("Use /SoundCloud for SoundCloudlinks")   
-
+        if "youtube.com/playlist" in url:            
+            return await play_yt_playlist(message)
         mystic = await message.reply_text("Processing URL... Please Wait!")
         if not message.reply_to_message:
             query = message.text.split(None, 1)[1]
@@ -171,11 +168,25 @@ async def play(_, message: Message):
                 message.from_user.first_name, message.from_user.id, "abcd"
             )
             await message.reply_text(
-                    "**Usage:** /play [Music Name or Youtube Link or Reply to Audio]\n\nIf you want to play Playlists! Select the one from Below.",
+                    """
+**A Telegram Music+Video Streaming bot with some useful features.**  
+
+• `/play  : [Music Name or Youtube Link or Reply to Audio]`
+• `/mplay : [Music Name or Youtube Link or Reply to Audio]`
+• `/vplay : [Music Name or Youtube Link or Reply to Audio]`
+
+• `/spotify : play songs from spotify Playlists!`
+• `/resso : play songs from resso Playlists!`
+
+✘ `/play` : youtube playlist | Apple | Soundcloud.
+
+If you want to play Playlists! Select the one from Below.
+                    
+                    """,
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
             return
-        mystic = await message.reply_text("🔍 **Searching**...")
+        mystic = await message.reply_text("`Searching...`")
         query = message.text.split(None, 1)[1]
         (
             title,

@@ -366,3 +366,94 @@ async def play_spotify_playlist(_, CallbackQuery):
                 )
     except:
         pass
+
+
+
+#spotify direct play
+
+async def spotify_play(message):
+    surl = message.replace("/play","").replace(f"/play@{BOT_USERNAME}","").strip()
+    url = get_spotify_url(surl)
+    if url:
+            mystic = await message.reply_text("**Processing URL... Please Wait!**")      
+            
+            if "track" in url:
+                query = getsp_track_info(url)
+                if "errrorrr" in query:
+                    await mystic.delete()
+                    return await message.reply_photo(
+                        photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                        caption=(
+                            "⭐️ **Give me a Link Or Use Browse Button Below**\n\n**Usage:**\n /spotify [Spotify Track Or Playlist Or Album Or Artist Link]\n\n➤ **Playing limit is 20 songs for playlists and albums** "
+                        ),
+                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="🌏Browse", callback_data="cat pg1"),InlineKeyboardButton(text="Close", callback_data="close_btn"),]]))             
+                (
+                    title,
+                    duration_min,
+                    duration_sec,
+                    thumb,
+                    videoid,
+                    views, 
+                    channel
+                ) = get_yt_info_query(query)
+                await mystic.delete()
+                MusicData = f"MusicStream {videoid}|{duration_min}|{message.from_user.id}"
+                return await mplay_stream(message,MusicData)
+            elif "playlist" in url:                
+                playlist_id = url[34:56].strip()
+                pinfo = await getsp_playlist_info(url,message.from_user.id)
+                if "errrorrr" in pinfo:
+                    await mystic.delete()
+                    return await message.reply_photo(
+                        photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                        caption=(
+                            "⭐️ **Give me a Link Or Use Browse Button Below**\n\n**Usage:**\n /spotify [Spotify Track Or Playlist Or Album Or Artist Link]\n\n➤ **Playing limit is 20 songs for playlists and albums** "
+                        ),
+                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="🌏Browse", callback_data="cat pg1"),InlineKeyboardButton(text="Close", callback_data="close_btn"),]]))             
+                await mystic.delete()
+                return await message.reply_photo(
+                        photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                        caption=f"🏷**Playlist Name:** {pinfo[0]}\n🎧 **Playlist By:** {pinfo[1]}",
+                        reply_markup=InlineKeyboardMarkup(spotify_buttons(playlist_id,"pl")))
+            elif "album" in url:
+                ainfo = await getsp_album_info(url,message.from_user.id)                
+                albumid = url[31:53].strip()
+                if "errrorrr" in ainfo:
+                    await mystic.delete()
+                    return await message.reply_photo(
+                        photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                        caption=(
+                            "⭐️ **Give me a Link Or Use Browse Button Below**\n\n**Usage:**\n /spotify [Spotify Track Or Playlist Or Album Or Artist Link]\n\n➤ **Playing limit is 20 songs for playlists and albums** "
+                        ),
+                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="🌏Browse", callback_data="cat pg1"),InlineKeyboardButton(text="Close", callback_data="close_btn"),]]))             
+                await mystic.delete()
+                return await message.reply_photo(
+                        photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                        caption=f"🏷**Album Name:** {ainfo[0]}\n🎧**Album By:** {ainfo[1]}",
+                        reply_markup=InlineKeyboardMarkup(spotify_buttons(albumid,"ab")))
+            elif "artist" in url:                
+                ainfo = await getsp_artist_info(url)                
+                albumid = url[32:54].strip()
+                if "errrorrr" in ainfo:
+                    await mystic.delete()
+                    return await message.reply_photo(
+                        photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                        caption=(
+                            "⭐️ **Give me a Link Or Use Browse Button Below**\n\n**Usage:**\n /spotify [Spotify Track Or Playlist Or Album Or Artist Link]\n\n➤ **Playing limit is 20 songs for playlists and albums** "
+                        ),
+                        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="🌏Browse", callback_data="cat pg1"),InlineKeyboardButton(text="Close", callback_data="close_btn"),]]))             
+                await mystic.delete()
+                return await message.reply_photo(
+                        photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                        caption=f"🏷**Artist Name:** {ainfo[0]}\n🎧**Click the Button below to play top 10 songs of {ainfo[0]}**",
+                        reply_markup=InlineKeyboardMarkup(spotify_buttons(albumid,"ar")))
+            else:
+                await mystic.delete()
+                return await message.reply_photo(
+                    photo="https://telegra.ph/file/86c3c824132236bf502ff.jpg",
+                    caption=(
+                        "⭐️ **Give me a Link Or Use Browse Button Below**\n\n**Usage:**\n /spotify [Spotify Track Or Playlist Or Album Or Artist Link]\n\n➤ **Playing limit is 20 songs for playlists and albums** "
+                    ),
+                    reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(text="🌏Browse", callback_data="cat pg1"),InlineKeyboardButton(text="Close", callback_data="close_btn"),]]))             
+
+

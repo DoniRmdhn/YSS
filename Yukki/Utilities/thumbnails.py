@@ -1,10 +1,13 @@
 import os
+import re
+import textwrap
 import random
 from os import path
 
 import aiofiles
 import aiohttp
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import (Image, ImageDraw, ImageEnhance, ImageFilter,
+                 ImageFont, ImageOps)
 import numpy as np
 
 
@@ -83,7 +86,7 @@ async def gen_thumb(thumbnail, title, userid, status, views, duration, channel):
     views = f"Views : {views}"
     duration = f"Duration : {duration} Mins"
     channel = f"Channel : {channel}"
-    szchannel = "Powered By : @szteambots"
+    szchannel = "Powered By : szteambots"
 
     image4.text((670, 450), text=views, fill="white", font = font4, align ="left") 
     image4.text((670, 500), text=duration, fill="white", font = font4, align ="left") 
