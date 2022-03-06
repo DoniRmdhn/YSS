@@ -139,7 +139,11 @@ async def play(_, message: Message):
         
         if "resso.com" in url:            
             return await message.reply_text("Use /resso for resso links")
-        
+        if "apple.com" in url:            
+            return await message.reply_text("Use /apple for apple links") 
+        if "SoundCloud.com" in url:            
+            return await message.reply_text("Use /SoundCloud for SoundCloudlinks")   
+
         mystic = await message.reply_text("Processing URL... Please Wait!")
         if not message.reply_to_message:
             query = message.text.split(None, 1)[1]

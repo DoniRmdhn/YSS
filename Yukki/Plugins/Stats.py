@@ -27,15 +27,8 @@ from Yukki.Database import get_gbans_count, get_served_chats, get_sudoers
 from Yukki.Inline import stats1, stats2, stats3, stats4, stats5, stats6, stats7
 from Yukki.Plugins import ALL_MODULES
 from Yukki.Utilities.ping import get_readable_time
+from . fsub import fsub
 
-__MODULE__ = "Stats"
-__HELP__ = """
-
-
-/stats
-- Check the Stats of Bot.
-- Gets the stat of MongoDb , Assistant, System etc
-"""
 
 
 async def bot_sys_stats():
@@ -51,7 +44,8 @@ async def bot_sys_stats():
     return stats
 
 
-@app.on_message(filters.command("vcstats") & ~filters.edited & filters.user(SUDOERS))
+@app.on_message(filters.command("stats") & ~filters.edited & filters.user(SUDOERS))
+@fsub
 async def gstats(_, message):
     start = datetime.now()
     try:

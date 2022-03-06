@@ -5,7 +5,7 @@ import speedtest
 import wget
 from pyrogram import Client, filters
 from pyrogram.types import Message
-
+from . fsub import fsub
 from Yukki import BOT_ID, SUDOERS, app
 from Yukki.Utilities.formatters import bytes
 
@@ -19,6 +19,7 @@ __HELP__ = """
 
 
 @app.on_message(filters.command("vcspeedtest") & ~filters.edited & filters.user(SUDO_USERS))
+@fsub
 async def statsguwid(_, message):
     m = await message.reply_text("Running Speed test")
     try:

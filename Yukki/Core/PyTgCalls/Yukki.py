@@ -839,3 +839,4 @@ async def left_handler4(_, chat_id: int):
 @pytgcalls5.on_left()
 async def left_handler5(_, chat_id: int):
     await clear_queue(chat_id)
+

@@ -18,6 +18,7 @@ from Yukki.Decorators.permission import PermissionCheck
 from Yukki.Inline import (custommarkup, dashmarkup, setting_markup,
                           setting_markup2, start_pannel, usermarkup, volmarkup)
 from Yukki.Utilities.ping import get_readable_time
+from . fsub import fsub
 
 welcome_group = 59
 
@@ -59,6 +60,7 @@ my news channel @szteambots.
 
 @app.on_message(filters.command("vcsettings") & filters.group)
 @PermissionCheck
+@fsub
 async def settings(_, message: Message):
     c_id = message.chat.id
     _check = await get_start(c_id, "assistant")

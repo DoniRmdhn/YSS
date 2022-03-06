@@ -8,27 +8,11 @@ from Yukki.Database import (_get_authusers, delete_authuser, get_authuser,
 from Yukki.Decorators.admins import AdminActual
 from Yukki.Utilities.changers import (alpha_to_int, int_to_alpha,
                                       time_to_seconds)
-
-__MODULE__ = "Auth Users"
-__HELP__ = """
-
-**Note:**
--Auth users can skip, pause, stop, resume Voice Chats even without Admin Rights.
-
-
-/auth [Username or Reply to a Message] 
-- Add a user to AUTH LIST of the group.
-
-/unauth [Username or Reply to a Message] 
-- Remove a user from AUTH LIST of the group.
-
-/authusers 
-- Check AUTH LIST of the group.
-"""
-
+from . fsub import fsub
 
 @app.on_message(filters.command("auth") & filters.group)
 @AdminActual
+@fsub
 async def auth(_, message: Message):
     if not message.reply_to_message:
         if len(message.command) != 2:
@@ -98,6 +82,7 @@ async def auth(_, message: Message):
 
 @app.on_message(filters.command("unauth") & filters.group)
 @AdminActual
+@fsub
 async def whitelist_chat_func(_, message: Message):
     if not message.reply_to_message:
         if len(message.command) != 2:
@@ -129,6 +114,7 @@ async def whitelist_chat_func(_, message: Message):
 
 
 @app.on_message(filters.command("authusers") & filters.group)
+@fsub
 async def authusers(_, message: Message):
     _playlist = await get_authuser_names(message.chat.id)
     if not _playlist:

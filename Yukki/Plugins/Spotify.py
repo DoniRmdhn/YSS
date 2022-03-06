@@ -62,6 +62,7 @@ from Yukki.Utilities.thumbnails import gen_thumb
 from Yukki.Utilities.timer import start_timer
 from Yukki.Utilities.youtube import get_m3u8, get_yt_info_id
 from config import get_queue
+from . fsub import fsub
 
 def spotify_buttons(id,type):
     buttons = [
@@ -88,6 +89,7 @@ def spotify_buttons(id,type):
 @logging
 @PermissionCheck
 @AssistantAdd
+@fsub
 async def spotify_play(_, message: Message):
     await message.delete()
     url = get_spotify_url(message.text)

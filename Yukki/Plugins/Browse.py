@@ -4,8 +4,10 @@ from Yukki import app
 import pyrogram
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from . fsub import fsub
 
 @app.on_callback_query(filters.regex("cat"))
+@fsub
 async def browse_menu(_, query):
     try:
         data = query.data.replace("cat","").strip()
@@ -32,6 +34,7 @@ async def browse_menu(_, query):
         pass
 
 @app.on_callback_query(filters.regex("refbrowse"))
+@fsub
 async def refresh_browse(_, query):
     try:
         await query.answer(

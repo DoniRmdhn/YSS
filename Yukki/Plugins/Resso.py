@@ -61,6 +61,7 @@ from Yukki.Utilities.thumbnails import gen_thumb
 from Yukki.Utilities.timer import start_timer
 from Yukki.Utilities.youtube import get_m3u8, get_yt_info_id
 from config import get_queue
+from . fsub import fsub
 
 def resso_buttons(id,type):
     buttons = [   
@@ -82,6 +83,7 @@ def resso_buttons(id,type):
 @logging
 @PermissionCheck
 @AssistantAdd
+@fsub
 async def resso_play(_, message: Message):
     await message.delete()
     url = get_resso_url(message.text)

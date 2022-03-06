@@ -12,6 +12,7 @@ from Yukki.Decorators.permission import PermissionCheck
 from Yukki.Inline import song_download_markup, song_markup
 from Yukki.Utilities.url import get_url
 from Yukki.Utilities.youtube import get_yt_info_query, get_yt_info_query_slider
+from . fsub import fsub
 
 loop = asyncio.get_event_loop()
 
@@ -30,6 +31,7 @@ __HELP__ = """
 @app.on_message(
     filters.command(["songnot", f"songnot@{BOT_USERNAME}"])
 )
+@fsub
 @PermissionCheck
 async def play(_, message: Message):
     if message.chat.type == "private":

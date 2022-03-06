@@ -14,34 +14,15 @@ from Yukki.Inline import (add_genre_markup, check_genre_markup, check_markup,
                           delete_playlist_markuup, download_markup,
                           others_markup, play_genre_playlist, playlist_markup,
                           third_playlist_markup)
-
-__MODULE__ = "Playlist"
-__HELP__ = """
-
-
-/playplaylist 
-- Start playing Your Saved Playlist.
-
-
-/playlist 
-- Check Your Saved Playlist On Servers.
-
-
-/delmyplaylist
-- Delete any saved music in your playlist
-
-
-/delgroupplaylist
-- Delete any saved music in your group's playlist [Requires Admin Rights.]
-"""
+from . fsub import fsub
 
 
 @app.on_message(filters.command(["playplaylist", f"playplaylist@{BOT_USERNAME}"]) & filters.group)
 @checker
 @PermissionCheck
 @AssistantAdd
+@fsub
 async def play_playlist_cmd(_, message):
-    thumb = "Utils/Playlist.jpg"
     await message.delete()
     if not message.reply_to_message:
         if len(message.command) == 2:
@@ -105,8 +86,8 @@ async def play_playlist_cmd(_, message):
 @checker
 @PermissionCheck
 @AssistantAdd
+@fsub
 async def playlist(_, message):
-    thumb = "Utils/Playlist.jpg"
     user_id = message.from_user.id
     user_name = message.from_user.first_name
     buttons = check_markup(user_name, user_id, "abcd")
@@ -165,6 +146,7 @@ options_Genre = [
 
 
 @app.on_message(filters.command("delmyplaylist") & filters.group)
+@fsub
 async def del_cmd(_, message):
     usage = f"Usage:\n\n/delmyplaylist [Genre] [Numbers between 1-30] ( to delete a particular music in playlist )\n\nor\n\n/delmyplaylist [Genre] all ( to delete whole playlist )\n\n**Genres:-**\n{' | '.join(options_Genre)}"
     if len(message.command) < 3:
@@ -213,6 +195,7 @@ async def del_cmd(_, message):
 
 @app.on_message(filters.command("delgroupplaylist") & filters.group)
 @AdminRightsCheck
+@fsub
 async def delgroupplaylist(_, message):
     usage = f"Usage:\n\n/delgroupplaylist [Genre] [Numbers between 1-30] ( to delete a particular music in playlist )\n\nor\n\n /delgroupplaylist [Genre] all ( to delete whole playlist )\n\n**Genres:-**\n{' | '.join(options_Genre)}"
     if len(message.command) < 3:

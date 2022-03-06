@@ -28,45 +28,18 @@ from Yukki.Utilities.theme import check_theme
 from Yukki.Utilities.thumbnails import gen_thumb
 from Yukki.Utilities.timer import start_timer
 from Yukki.Utilities.youtube import get_m3u8, get_yt_info_id
+from . fsub import fsub
 
 loop = asyncio.get_event_loop()
 
 
-__MODULE__ = "Voice Chat"
-__HELP__ = """
-
-
-/pause
-- Pause the playing music on voice chat.
-
-/resume
-- Resume the paused music on voice chat.
-
-/skip
-- Skip the current playing music on voice chat
-
-/end or /stop
-- Stop the playout.
-
-/queue
-- Check queue list.
-
-
-**Note:**
-Only for Sudo Users
-
-/activevc
-- Check active voice chats on bot.
-
-/activevideo
-- Check active video calls on bot.
-"""
 
 
 @app.on_message(
     filters.command(["pause", "skip", "resume",  "end",  f"pause@{BOT_USERNAME}",  f"skip@{BOT_USERNAME}",  f"resume@{BOT_USERNAME}",  f"stop@{BOT_USERNAME}",  f"end@{BOT_USERNAME}"])
     & filters.group
 )
+@fsub
 @AdminRightsCheck
 @checker
 async def admins(_, message: Message):

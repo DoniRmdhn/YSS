@@ -4,6 +4,7 @@ from pyrogram import filters
 from youtube_search import YoutubeSearch
 from pytube import YouTube
 from Yukki import app
+from . fsub import fsub
 
 CAPTION_TEXT = """
 ࿂ **Title:** `{}`
@@ -68,6 +69,7 @@ async def downlodvideo(m, message, vid_id):
        await m.edit(f"__Error occured. ⚠️ \nAnd also you can get a help from @slbotzone.__\n\n{str(e)}")
 
 @app.on_message(filters.command("song"))
+@fsub
 async def songdown(_, message):
    try: 
     if len(message.command) < 2:
@@ -84,6 +86,7 @@ Use help Menu : /help
        """)
 
 @app.on_message(filters.command("video"))
+@fsub
 async def videodown(_, message):
    try: 
     if len(message.command) < 2:

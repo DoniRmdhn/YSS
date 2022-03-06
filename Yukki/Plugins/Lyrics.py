@@ -7,17 +7,7 @@ from pyrogram.types import Message
 from youtubesearchpython import VideosSearch
 
 from Yukki import BOT_USERNAME, MUSIC_BOT_NAME, app
-
-__MODULE__ = "Lyrics"
-__HELP__ = """
-
-/Lyrics [Music Name]
-- Searches Lyrics for the particular Music on web.
-
-**Note**:
-Inline button of Lyrics has some bugs. Searches only 50% results. You can use command instead if you want lyrics for any playing music.
-
-"""
+from . fsub import fsub
 
 
 @app.on_callback_query(filters.regex(pattern=r"lyrics"))
@@ -79,6 +69,7 @@ async def lyricssex(_, CallbackQuery):
 
 
 @app.on_message(filters.command(["lyrics", f"lyrics@{BOT_USERNAME}"]))
+@fsub
 async def lrsearch(_, message: Message):
     if len(message.command) < 2:
         return await message.reply_text("**Usage:**\n\n/lyrics [ Music Name]")
@@ -113,3 +104,4 @@ async def lrsearch(_, message: Message):
         os.remove(filename)
     else:
         await m.edit(xxx)
+
