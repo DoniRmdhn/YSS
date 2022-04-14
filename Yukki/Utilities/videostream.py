@@ -53,10 +53,11 @@ async def start_stream_video(message, file, title, mystic):
             photo="Utils/Telegram.JPEG",
             caption=(
                 f"""
-•• **Track added to queue** •• `{position}`
+**Track added to queue** •• `{position}`
 
-• **Requested By**: {user}
-• **Information**:[Here]({link})
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
 """
             ),
             reply_markup=audio_markup2,
@@ -81,10 +82,11 @@ async def start_stream_video(message, file, title, mystic):
         buttons = secondary_markup2("Smex1", message.from_user.id)
         await mystic.delete()
         cap = f"""
-•• **Started Streaming** ••
+📡 **Started Streaming**
 
-• **Requested By:** {user}
-• **Information:** [Here]({link})
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
 """
         final_output = await message.reply_photo(
             photo="Utils/Telegram.JPEG",
@@ -129,10 +131,10 @@ async def start_live_stream(
     await add_active_video_chat(CallbackQuery.message.chat.id)
     buttons = secondary_markup2(videoid, CallbackQuery.from_user.id)
     cap = f"""
-•• **Started Streaming** ••
+📡 **Started Streaming**
 
-• **Requested By:** {CallbackQuery.from_user.mention}
-• **Information:** [Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})
+🎧 **Requested By:** {CallbackQuery.from_user.mention}
+💡 **Information:** [Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})
 """
     final_output = await CallbackQuery.message.reply_photo(
         photo=thumb,
@@ -188,10 +190,11 @@ async def start_video_stream(
             photo=thumb,
             caption=(
                 f"""
-•• **Track added to queue** •• `{position}`
+ **Track added to queue** •• `{position}`
 
-• **Requested By**: {user}
-• **Information**:[Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
 """
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
@@ -221,10 +224,11 @@ async def start_video_stream(
             videoid, CallbackQuery.from_user.id, duration_min, duration_min
         )
         cap = f"""
-•• **Started Streaming** •• 
+📡 **Started Streaming**
 
-• **Requested By**: {user}
-• **Information**:[Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
 """     
         final_output = await CallbackQuery.message.reply_photo(
             photo=thumb,
