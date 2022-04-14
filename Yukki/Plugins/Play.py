@@ -159,7 +159,7 @@ async def play(_, message: Message):
         buttons = url_markup2(videoid, duration_min, message.from_user.id)
         return await message.reply_photo(
             photo=thumb,
-            caption=f"🏷 **Name:**{title}\n**⏱Duration**: {duration_min} Mins\n🎧 **Request by:**{mention}\n\n[Get  Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})",
+            caption=f"🏷 **Name:**{title}\n**⏱ Duration**: {duration_min} Mins\n🎧 **Requested by:**{mention}\n\n[Get  Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     else:
@@ -186,7 +186,7 @@ If you want to play Playlists! Select the one from Below.
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
             return
-        mystic = await message.reply_text("`Searching...`")
+        mystic = await message.reply_text("Searching...")
         query = message.text.split(None, 1)[1]
         (
             title,
@@ -203,7 +203,7 @@ If you want to play Playlists! Select the one from Below.
         )
         return await message.reply_photo(
             photo=thumb,
-            caption=f"🏷 **Name:**{title}\n**⏱Duration**: {duration_min} Mins\n🎧 **Request by:**{mention}\n\n[Get  Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})",
+            caption=f"🏷 **Name:**{title}\n**⏱ Duration**: {duration_min} Mins\n🎧 **Requested by:**{mention}",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
 
@@ -385,7 +385,7 @@ async def slider_query_results(_, CallbackQuery):
         )
         med = InputMediaPhoto(
             media=thumb,
-            caption=f"🏷 **Name:**{title}\n**⏱Duration**: {duration_min} Mins\n🎧 **Request by:**{mention}\n\n[Get  Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})",
+            caption=f"🏷 **Name:**{title}\n**⏱ Duration**: {duration_min} Mins\n🎧 **Requested by:**{mention}",
         )
         return await CallbackQuery.edit_message_media(
             media=med, reply_markup=InlineKeyboardMarkup(buttons)
@@ -408,7 +408,7 @@ async def slider_query_results(_, CallbackQuery):
         )
         med = InputMediaPhoto(
             media=thumb,
-            caption=f"🏷 **Name:**{title}\n**⏱Duration**: {duration_min} Mins\n🎧 **Request by:**{mention}\n\n[Get  Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})",
+            caption=f"🏷 **Name:**{title}\n**⏱ Duration**: {duration_min} Mins\n🎧 **Requested by:**{mention}",
         )
         return await CallbackQuery.edit_message_media(
             media=med, reply_markup=InlineKeyboardMarkup(buttons)
