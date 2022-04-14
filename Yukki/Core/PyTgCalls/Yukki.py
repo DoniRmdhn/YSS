@@ -33,7 +33,7 @@ from Yukki.Utilities.theme import check_theme
 from Yukki.Utilities.thumbnails import gen_thumb
 from Yukki.Utilities.timer import start_timer
 from Yukki.Utilities.youtube import get_m3u8, get_yt_info_id
-from Yukki.Utilities.autoclean import auto_clean
+
 ### Clients
 pytgcalls1 = PyTgCalls(ASS_CLI_1)
 pytgcalls2 = PyTgCalls(ASS_CLI_2)
@@ -337,23 +337,18 @@ async def stop_stream(chat_id: int):
     if int(assistant) == 1:
         await pytgcalls1.leave_group_call(chat_id)
         await remove_active_video_chat(chat_id)
-        await pytgcalls1.leave_chat(chat_id)
     elif int(assistant) == 2:
         await pytgcalls2.leave_group_call(chat_id)
         await remove_active_video_chat(chat_id)
-        await pytgcalls2.leave_chat(chat_id)
     elif int(assistant) == 3:
         await pytgcalls3.leave_group_call(chat_id)
         await remove_active_video_chat(chat_id)
-        await pytgcalls3.leave_chat(chat_id)
     elif int(assistant) == 4:
         await pytgcalls4.leave_group_call(chat_id)
         await remove_active_video_chat(chat_id)
-        await pytgcalls4.leave_chat(chat_id)
     elif int(assistant) == 5:
         await pytgcalls5.leave_group_call(chat_id)
         await remove_active_video_chat(chat_id)
-        await pytgcalls5.leave_chat(chat_id)
 
 
 ### Multi Assistant Skip
@@ -413,14 +408,12 @@ async def skip_stream(chat_id: int, file_path: str):
 
 
 async def skip_video_stream(chat_id: int, ytlink: str, quality, mystic):
-    popped = None
     if int(quality) == 720:
         stream_quality = HighQualityVideo()
     elif int(quality) == 480:
         stream_quality = MediumQualityVideo()
     elif int(quality) == 360:
         stream_quality = LowQualityVideo()
-    await auto_clean(popped) 
     _assistant = await get_assistant(chat_id, "assistant")
     assistant = _assistant["saveassistant"]
     if int(assistant) == 1:
@@ -528,10 +521,8 @@ async def playout_end(pytgclients, chat_id):
                     chat_id,
                     photo=thumb,
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"""
-•• **Started Streaming** •• 
-• **Information**:[Here](https://t.me/szrosebot?start=info_{videoid})
-""" )
+                    caption=f"🎥<b>__Started Streaming:__</b> {title} \n🎧<b>__Requested by:__ </b> {mention}",
+                )
                 await start_timer(
                     videoid,
                     duration_min,
@@ -570,11 +561,8 @@ async def playout_end(pytgclients, chat_id):
                         photo="Utils/Telegram.JPEG",
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=(
-                            f"""
-•• **Started Streaming** •• 
-
-• **Information**:[Here](https://t.me/szrosebot?start=info_{videoid})
-"""),
+                            f"**Video Streaming**\n\n🎥<b>__Started Playing:__ </b>Next Video from Telegram \n🎧**__Requested by:__** {mention}"
+                        ),
                     )
                     await finaltext.delete()
                 else:
@@ -626,11 +614,8 @@ async def playout_end(pytgclients, chat_id):
                         photo=thumb,
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=(
-                           f"""
-•• **Started Streaming** •• 
-
-• **Information**:[Here](https://t.me/szrosebot?start=info_{videoid})
-"""),
+                            f"**Video Streaming**\n\n🎥<b>__Started Playing:__ </b>[{title[:25]}](https://www.youtube.com/watch?v={afk}) \n🎧**__Requested by:__** {mention}"
+                        ),
                     )
                     os.remove(thumb)
                     await start_timer(
@@ -689,11 +674,8 @@ async def playout_end(pytgclients, chat_id):
                     photo=thumb,
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=(
-                        f"""
-•• **Started Streaming** •• 
-
-• **Information**:[Here](https://t.me/szrosebot?start=info_{videoid})
-"""),
+                        f"🎧<b> Started Playing:</b>[{title[:25]}](https://www.youtube.com/watch?v={afk})"
+                    ),
                 )
                  
                 os.remove(thumb)
@@ -857,4 +839,3 @@ async def left_handler4(_, chat_id: int):
 @pytgcalls5.on_left()
 async def left_handler5(_, chat_id: int):
     await clear_queue(chat_id)
-
