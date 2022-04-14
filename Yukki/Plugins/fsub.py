@@ -11,7 +11,7 @@ from pyrogram.errors import UserNotParticipant
 
 
 CAPTION_BTN = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("News  Channel", url="https://t.me/szteambots")]])
+            [[InlineKeyboardButton("Support Grup", url="https://t.me/synxsupport")]])
 
 def fsub(func):
     @wraps(func)
