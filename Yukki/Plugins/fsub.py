@@ -11,7 +11,7 @@ from pyrogram.errors import UserNotParticipant
 
 
 CAPTION_BTN = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Support Grup", url="https://t.me/synxsupport")]])
+            [[InlineKeyboardButton("Join Support Grup", url="https://t.me/synxsupport")]])
 
 def fsub(func):
     @wraps(func)
@@ -20,10 +20,7 @@ def fsub(func):
             await message._client.get_chat_member(int(FSUB_CHANNEL), message.from_user.id)
         except UserNotParticipant:
             return await message.reply_text(
-            text="""
-⛔️ **Access Denied**
- You Must Join [My News Channel](https://t.me/szteambots)To Use Me. So, Please Join it & Try Again.
-            """,
+            text="Hai\nSupaya Bisa Menggunakan Bot Kamu Harus Bergabung Ke Grup Support bot Terlebih Dahulu!.\nSilahkan Klik Tombol Di Bawah Untuk Join Ke Grup support.",
             reply_markup=CAPTION_BTN,
             disable_web_page_preview=True) 
         return await func(_, message)    
