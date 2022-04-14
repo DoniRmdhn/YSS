@@ -44,11 +44,11 @@ def url_markup(videoid, duration, user_id, query, query_type):
         ],
         [
             InlineKeyboardButton(
-                text="❮❮❮Previous",
+                text="❮",
                 callback_data=f"slider B|{query_type}|{query}|{user_id}",
             ),
             InlineKeyboardButton(
-                text="Next❯❯❯",
+                text="❯",
                 callback_data=f"slider F|{query_type}|{query}|{user_id}",
             ),
         ],
