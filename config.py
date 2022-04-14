@@ -20,11 +20,11 @@ MUSIC_BOT_NAME = getenv("MUSIC_BOT_NAME")
 HEROKU_API_KEY = getenv("HEROKU_API_KEY")
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 
-UPSTREAM_REPO = "https://github.com/szsupunma/Rose-music"
+UPSTREAM_REPO = "https://github.com/DoniRmdhn/YSS"
 UPSTREAM_BRANCH = "main"
 
-SUPPORT_CHANNEL = "https://t.me/slbotzone"
-SUPPORT_GROUP = "https://t.me/szteambots"
+SUPPORT_CHANNEL = "https://t.me/synxupdate"
+SUPPORT_GROUP = "https://t.me/synxsupport"
 
 THUMBNAIL = getenv("THUMB_LINK") 
 
