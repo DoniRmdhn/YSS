@@ -57,13 +57,15 @@ async def start_stream(
         to_append = [title, user, duration]
         got_queue.append(to_append)
         final_output = await CallbackQuery.message.reply_photo(
-            photo=thumb,
+        thumb = await gen_thumb(
+                        thumbnail, title, user_id, "QUEUED TRACK", views, duration_min, channel
             caption=(
                 f"""
-•• **Track added to queue** •• `{position}`
+💡 **Track added to queue** `{position}`
 
-• **Requested By**: {user}
-• **Information**:[Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
                 """
             ),
             reply_markup=InlineKeyboardMarkup(buttons),
@@ -88,11 +90,12 @@ async def start_stream(
             videoid, CallbackQuery.from_user.id, duration_min, duration_min
         )
         await mystic.delete()
+        photo = await gen_thumb(
+                        thumbnail, title, user_id, "NOW PLAYING", views, duration_min, channel
         cap = f"""
-•• **Started Streaming** •• 
-
-• **Requested By**: {user}
-• **Information**:[Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})"""
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
         final_output = await CallbackQuery.message.reply_photo(
             photo=thumb,
             reply_markup=InlineKeyboardMarkup(buttons),
@@ -139,7 +142,8 @@ async def start_stream_audio(
         to_append = [title, user, duration]
         got_queue.append(to_append)
         final_output = await message.reply_photo(
-            photo="Utils/Telegram.JPEG",
+            photo= await gen_thumb(
+                        thumbnail, title, user_id, "QUEUED TRACK", views, duration_min, channel
             caption=(
                 f"""
 •• **Track added to queue** •• `{position}`
@@ -177,7 +181,8 @@ async def start_stream_audio(
 • **Information**:[Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})
         """
         final_output = await message.reply_photo(
-            photo="Utils/Telegram.JPEG",
+            photo= await gen_thumb(
+                        thumbnail, title, user_id, "NOW PLAYING", views, duration_min, channel
             reply_markup=InlineKeyboardMarkup(buttons),
             caption=cap,
         )
