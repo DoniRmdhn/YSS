@@ -146,10 +146,11 @@ async def start_stream_audio(
                         thumbnail, title, user_id, "QUEUED TRACK", views, duration_min, channel
             caption=(
                 f"""
-•• **Track added to queue** •• `{position}`
+💡 **Track added to queue** `{position}`
 
-• **Requested By**: {user}
-• **Information**:[Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})       
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
                 """
             ),
             reply_markup=audio_markup2,
@@ -175,10 +176,9 @@ async def start_stream_audio(
         )
         await mystic.delete()
         cap = f"""
-•• **Started Streaming** •• 
-
-• **Requested By**: {user}
-• **Information**:[Here](https://t.me/{BOT_USERNAME}?start=info_{videoid})
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
         """
         final_output = await message.reply_photo(
             photo= await gen_thumb(
