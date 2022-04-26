@@ -148,9 +148,9 @@ async def start_stream_audio(
                 f"""
 💡** Track added to queue** `{position}`
 
-🏷** Title**: {title}
-⏱️** Duration**: {duration}
-🎧** Requested By**: {user}
+🏷 **Title**: {title}
+⏱️ **Duration**: {duration}
+🎧 **Requested By**: {user}
                 """
             ),
             reply_markup=audio_markup2,
