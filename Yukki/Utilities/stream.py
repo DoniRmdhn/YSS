@@ -146,11 +146,11 @@ async def start_stream_audio(
                         thumbnail, title, user_id, "QUEUED TRACK", views, duration_min, channel
             caption=(
                 f"""
-💡 **Track added to queue** `{position}`
+💡** Track added to queue** `{position}`
 
-🏷 **Title**: {title}
-⏱️ **Duration**: {duration}
-🎧 **Requested By**: {user}
+🏷** Title**: {title}
+⏱️** Duration**: {duration}
+🎧** Requested By**: {user}
                 """
             ),
             reply_markup=audio_markup2,
