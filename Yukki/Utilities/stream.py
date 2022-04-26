@@ -96,6 +96,7 @@ async def start_stream(
 🏷 **Title**: {title}
 ⏱️ **Duration**: {duration}
 🎧 **Requested By**: {user}
+               """
         final_output = await CallbackQuery.message.reply_photo(
             photo=thumb,
             reply_markup=InlineKeyboardMarkup(buttons),
@@ -151,7 +152,7 @@ async def start_stream_audio(
 🏷 **Title**: {title}
 ⏱️ **Duration**: {duration}
 🎧 **Requested By**: {user}
-                """
+        """
             ),
             reply_markup=audio_markup2,
         )
