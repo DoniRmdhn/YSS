@@ -44,7 +44,7 @@ async def gen_thumb(thumbnail, title, userid, status, views, duration, channel):
     
     image = Image.open(f"cache/thumb{userid}.jpg")
     black = Image.open("Utils/black.jpg")
-    circle = Image.open("Utils/circle.png")
+    circle = Image.open("Utils/circlee.png")
     image1 = changeImageSize(1280, 720, image)
     image1 = image1.filter(ImageFilter.BoxBlur(10))
     image11 = changeImageSize(1280, 720, image)
