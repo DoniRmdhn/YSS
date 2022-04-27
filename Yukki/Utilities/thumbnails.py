@@ -1,16 +1,26 @@
 import os
-import re
-import textwrap
 import random
+from os import path
 
 import aiofiles
 import aiohttp
-from PIL import (Image, ImageDraw, ImageEnhance, ImageFilter,
-                 ImageFont, ImageOps)
-from youtubesearchpython import VideosSearch
-
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import numpy as np
 
+
+def truncate(text):
+    list = text.split(" ")
+    text1 = ""
+    text2 = ""    
+    for i in list:
+        if len(text1) + len(i) < 24:        
+            text1 += " " + i
+        elif len(text2) + len(i) < 24:        
+            text2 += " " + i
+
+    text1 = text1.strip()
+    text2 = text2.strip()     
+    return [text1,text2]
 
 def changeImageSize(maxWidth, maxHeight, image):
     widthRatio = maxWidth / image.size[0]
@@ -22,64 +32,40 @@ def changeImageSize(maxWidth, maxHeight, image):
 
 
 async def gen_thumb(thumbnail, title, userid, status, views, duration, channel):
-    if os.path.isfile(f"cache/{userid}.png"):
-        return f"cache/{userid}.png"
+    async with aiohttp.ClientSession() as session:
+        async with session.get(thumbnail) as resp:
+            if resp.status == 200:
+                f = await aiofiles.open(f"cache/thumb{userid}.jpg", mode="wb")
+                await f.write(await resp.read())
+                await f.close()
+    
+    image = Image.open(f"cache/thumb{userid}.jpg")
+    black = Image.open("Utils/black.jpg")
+    circle = Image.open("Utils/circle.png")
+    image1 = changeImageSize(1280, 720, image)
+    image1 = image1.filter(ImageFilter.BoxBlur(10))
+    image11 = changeImageSize(1280, 720, image)
+    image1 = image11.filter(ImageFilter.BoxBlur(10))
+    image2 = Image.blend(image1,black,0.6)
 
-    url = f"https://www.youtube.com/watch?v={videoid}"
-    try:
-        results = VideosSearch(url, limit=1)
-        for result in (await results.next())["result"]:
-            try:
-                title = result["title"]
-                title = re.sub("\W+", " ", title)
-                title = title.title()
-            except:
-                title = "Unsupported Title"
-            try:
-                duration = result["duration"]
-            except:
-                duration = "Unknown Mins"
-            thumbnail = result["thumbnails"][0]["url"].split("?")[0]
-            try:
-                views = result["viewCount"]["short"]
-            except:
-                views = "Unknown Views"
-            try:
-                channel = result["channel"]["name"]
-            except:
-                channel = "Unknown Channel"
+    # Cropping circle from thubnail
+    image3 = image11.crop((280,0,1000,720))
+    lum_img = Image.new('L', [720,720] , 0)
+    draw = ImageDraw.Draw(lum_img)
+    draw.pieslice([(0,0), (720,720)], 0, 360, fill = 255, outline = "white")
+    img_arr =np.array(image3)
+    lum_img_arr =np.array(lum_img)
+    final_img_arr = np.dstack((img_arr,lum_img_arr))
+    image3 = Image.fromarray(final_img_arr)
+    image3 = image3.resize((600,600))
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(thumbnail) as resp:
-                if resp.status == 200:
-                    f = await aiofiles.open(
-                        f"cache/thumb{userid}.jpg", mode="wb"
-                    )
-                    await f.write(await resp.read())
-                    await f.close()
+    image2.paste(image3, (50,70), mask = image3)
+    image2.paste(circle, (0,0), mask = circle)
 
-        youtube = Image.open(f"cache/thumb{userid}.png")
-        image1 = changeImageSize(1280, 720, youtube)
-        image2 = image1.convert("RGBA")
-        background = image2.filter(filter=ImageFilter.BoxBlur(30))
-        enhancer = ImageEnhance.Brightness(background)
-        background = enhancer.enhance(0.6)
-        Xcenter = youtube.width / 2
-        Ycenter = youtube.height / 2
-        x1 = Xcenter - 250
-        y1 = Ycenter - 250
-        x2 = Xcenter + 250
-        y2 = Ycenter + 250
-        logo = youtube.crop((x1, y1, x2, y2))
-        logo.thumbnail((520, 520), Image.ANTIALIAS)
-        logo = ImageOps.expand(logo, border=15, fill="white")
-        background.paste(logo, (50, 100))
-        draw = ImageDraw.Draw(background)
-        font = ImageFont.truetype("Utils/font2.ttf", 40)
-        font2 = ImageFont.truetype("Utils/font2.ttf", 70)
-        arial = ImageFont.truetype("Utils/font2.ttf", 30)
-        name_font = ImageFont.truetype("Utils/font.ttf", 30)
-        para = textwrap.wrap(title, width=32)
+    # fonts
+    font1 = ImageFont.truetype(r'Utils/arial_bold.ttf', 30)
+    font2 = ImageFont.truetype(r'Utils/arial_black.ttf', 60)
+    font3 = ImageFont.truetype(r'Utils/arial_black.ttf', 40)
     
 
     image4 = ImageDraw.Draw(image2)
@@ -95,23 +81,13 @@ async def gen_thumb(thumbnail, title, userid, status, views, duration, channel):
     views = f"Views : {views}"
     duration = f"Duration : {duration} Mins"
     channel = f"Channel : {channel}"
-
-    image4.text((680, 450), text=views, fill="white", font = font4, align ="left") 
-    image4.text((680, 500), text=duration, fill="white", font = font4, align ="left") 
-    image4.text((680, 550), text=channel, fill="white", font = font4, align ="left")
+    
+    image4.text((670, 450), text=views, fill="white", font = font4, align ="left") 
+    image4.text((670, 500), text=duration, fill="white", font = font4, align ="left") 
+    image4.text((670, 550), text=channel, fill="white", font = font4, align ="left")
+    image4.text((670, 650), text=szchannel, fill="white", font = font4, align ="left")
 
     image2.save(f"cache/final{userid}.png")
     os.remove(f"cache/thumb{userid}.jpg")
     final = f"cache/final{userid}.png"
     return final
-
-
-image3 = image11.crop((280,0,1000,720))
-    lum_img = Image.new('L', [720,720] , 0)
-    draw = ImageDraw.Draw(lum_img)
-    draw.pieslice([(0,0), (720,720)], 0, 360, fill = 255, outline = "white")
-    img_arr =np.array(image3)
-    lum_img_arr =np.array(lum_img)
-    final_img_arr = np.dstack((img_arr,lum_img_arr))
-    image3 = Image.fromarray(final_img_arr)
-    image3 = image3.resize((600,600))
