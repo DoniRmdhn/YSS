@@ -2,12 +2,13 @@ import os
 import re
 import textwrap
 import random
-from os import path
 
 import aiofiles
 import aiohttp
 from PIL import (Image, ImageDraw, ImageEnhance, ImageFilter,
                  ImageFont, ImageOps)
+from youtubesearchpython.__future__ import VideosSearch
+
 import numpy as np
 
 
