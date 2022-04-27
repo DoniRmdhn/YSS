@@ -156,20 +156,7 @@ async def play(_, message: Message):
             channel
         ) = get_yt_info_query(query)
         await mystic.delete()
-        buttons = search_markup(
-    ID1,
-    ID2,
-    ID3,
-    ID4,
-    ID5,
-    duration1,
-    duration2,
-    duration3,
-    duration4,
-    duration5,
-    user_id,
-    query,
-):
+        buttons = url_markup2(videoid, duration_min, message.from_user.id)
         return await message.reply_photo(
             photo=thumb,
             caption=f"🏷 **Name:**{title}\n**⏱ Duration**: {duration_min} Mins\n🎧 **Requested by:**{mention}\n\n[Get  Information](https://t.me/{BOT_USERNAME}?start=info_{videoid})",
@@ -224,7 +211,7 @@ If you want to play Playlists! Select the one from Below.
     duration5,
     user_id,
     query,
-):
+)
         return await message.reply_photo(
             photo=thumb,
             caption=f"🏷 **Name:**{title}\n**⏱ Duration**: {duration_min} Mins\n🎧 **Requested by:**{mention}",
